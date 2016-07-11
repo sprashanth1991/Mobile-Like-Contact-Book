@@ -1,0 +1,35 @@
+#map>div {
+	height: 420px !important;
+	width: 1200px !important;
+}
+
+.infoWindowContent {
+	font-size: 14px !important;
+	border-top: 1px solid #ccc;
+	padding-top: 10px;
+}
+
+.list {
+	margin: 0rem;
+    padding: 0rem;
+    list-style-type: none;
+}
+
+.item {
+	cursor: pointer;
+}
+
+.arrow {
+	float: right;
+	display: block;
+    background-image: url("/contactBook/img/rightArrow.png");
+    background-position-x: 0px;
+    background-position-y: 0px;
+    background-size: contain;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-attachment: scroll;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: transparent;
+}

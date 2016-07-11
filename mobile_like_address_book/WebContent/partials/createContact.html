@@ -1,0 +1,18 @@
+<div>
+	<form name="createContact" ng-submit="create()">
+		<label>
+			Name: <input type="text" ng-model="name" autofocus="autofocus" required>
+		</label>
+		<label>
+			Phone No.: <input type="text" ng-model="phoneNo" required>
+		</label>
+		<label>
+			Address: <input type="text" ng-model="address" required places-autocomplete>
+		</label>
+		<label>
+			Notes: <input type="text" ng-model="notes" required>
+		</label>
+		<input type="submit" ng-disabled="createContact.$invalid" value="Create">
+		<input type="reset" ng-click="reset()">
+	</form>
+</div>

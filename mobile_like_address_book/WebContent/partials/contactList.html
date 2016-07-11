@@ -1,0 +1,37 @@
+<div class="div-width">
+	<input type="text" ng-model="filterParam" autofocus="autofocus" />
+	<button ng-click="createContact()"> Create </button>
+	
+	<table>
+		<tr class="item" ng-repeat="contact in contacts | filter: search | orderBy : 'name'" ng-click="showDetails(contact)">
+			<td style="width: 5rem"> {{ contact.name }} </td>
+			<td style="width: 5rem"> {{ contact.phoneNo }} </td>
+			<td class="arrow"></td>
+		</tr>
+	</table>
+	
+	<!-- <ul class="list">
+	<span class="arrow"></span>
+		<li class="item" ng-repeat="contact in contacts | filter: search | orderBy : 'name'">
+		
+			<div ng-click="showDetails(contact)">
+				<span>{{ contact.name }}</span>
+				<span style="margin-left: 5rem">{{ contact.phoneNo }}</span>
+				<span class="arrow"></span>
+			</div>
+		
+			<div ng-click="showDetails(contact)">
+				<label>Name: </label> <label>{{ contact.name }}</label> <br>
+				<label>Phone No. </label> <label>{{ contact.phoneNo }}</label> <br>
+				<label>Address: </label> <label>{{ contact.address }}</label> <br>
+				<label>Notes: </label> <label>{{ contact.notes }}</label> <br>
+			</div>
+			<div>
+				<hr>
+			</div>
+			<br>
+		</li>
+	</ul> -->
+	
+	<div id="map"></div>
+</div>

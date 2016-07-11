@@ -1,0 +1,9 @@
+<div>
+	<form name="contactEdit">
+		<input type="text" autofocus="autofocus" ng-model="name" required>
+		<input type="tel" ng-model="phoneNo" required>
+		<input type="text" places-autocomplete ng-model="address" required>
+		<textarea type="text" ng-model="notes" required></textarea>
+		<input type="button" ng-disabled="contactEdit.$invalid" value="Save" ng-click="done()">
+	</form>
+</div>

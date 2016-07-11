@@ -1,0 +1,14 @@
+<div>
+	<ul class="list">
+		<li ng-repeat="detail in contactDetail | orderBy : 'name'">
+			<label>{{ detail.name }}</label>
+			<label>{{ detail.phoneNo }}</label>
+			<label>{{ detail.address }}</label>
+			<label>{{ detail.notes }}</label>
+			<button ng-click="editContact()" ng-show="isEditable"> Edit </button>
+			<button ng-click="deleteContact()"> Delete </button>
+			</br> </br>
+			<google-map id="map" lat="{{latitude}}" lng="{{longitude}}"></google-map>
+		</li>
+	</ul>
+</div>
