@@ -226,7 +226,7 @@ angular.module('contactApp', ['ngRoute'])
 	})
 	.directive('placesAutocomplete', function() {
 		return {
-//			restrict: 'A',
+			restrict: 'A',
 			scope: {},
 			link: function(scope, element, attr, controller) {
 				oElement = element;
