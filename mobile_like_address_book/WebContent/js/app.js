@@ -139,34 +139,76 @@ angular.module('contactApp', ['ngRoute'])
 		return {
 			restrict: 'E',
 			scope: {
-				lat: '@',
-				lng: '@'
+				/*lat: '@',
+				lng: '@',*/
+				addr: '@'
 			},
-			template: '<div id="map"><div>',
+			template: '<div><div>',
+			replace: true,
 			link: function($scope, $element, $attributes) {
-				var latitude, longitude;
+				var latitude, longitude, inpAddress;
 				ele = $element;
 				attrs = $attributes;
 				
 				$window.setTimeout(function() {
-					$attributes.$observe('lat', function(value) {
+					/*$attributes.$observe('lat', function(value) {
 						latitude = parseFloat($element[0].getAttribute('lat'));
 					});
 					
 					$attributes.$observe('lng', function(value) {
 						longitude = parseFloat($element[0].getAttribute('lng'));
+					});*/
+					
+					$attributes.$observe('addr', function(value) {
+						inpAddress = $element[0].getAttribute('addr');
 					});
-				}, 750);
+				}, 500);
 				
 				$window.setTimeout(function() {
-					var attrLat = parseFloat(attrs.lat);
+					var attrAddr = attrs.addr;
+					
+					if((attrAddr != undefined || attrAddr != null) && (attrAddr != inpAddress))
+						inpAddress = attrAddr;
+					
+					fnCallback = function(message) {
+				    	console.log(message);
+				    };
+				    
+				    var getLatLngFrmAddr = function(callback, address) {
+				    	if(address) {
+				    		var geocoder = new google.maps.Geocoder();
+					        if (geocoder) {
+					            geocoder.geocode({
+					                'address': address
+					            }, function (results, status) {
+					                if (status == google.maps.GeocoderStatus.OK) {
+					                	callback(status);
+					                	latitude = results[0].geometry.location.lat();
+					                	longitude = results[0].geometry.location.lng();
+					                }
+					                else {
+					                	alert("Please provide valid address");
+					                	callback(results);
+					                }
+					            });
+					        }
+				    	}
+				    	else
+				    		callback("Please provide valid address");
+				    };
+				    
+				    getLatLngFrmAddr(fnCallback, inpAddress);
+				}, 1000);
+				
+				$window.setTimeout(function() {
+					/*var attrLat = parseFloat(attrs.lat);
 					var attrLng = parseFloat(attrs.lng);
 					
 					if(attrLat != 0 && attrLat != latitude)
 						latitude = attrLat;
 					
 					if(attrLng != 0 && attrLng != longitude)
-						longitude = attrLng;
+						longitude = attrLng;*/
 					
 					var oMapOpts = {
 						zoom: 15,
@@ -178,13 +220,13 @@ angular.module('contactApp', ['ngRoute'])
 			            map: oMap,
 			            position: oMapOpts.center
 					});
-				}, 1000);
+				}, 2000);
 			}
 		};
 	})
 	.directive('placesAutocomplete', function() {
 		return {
-			restrict: 'A',
+//			restrict: 'A',
 			scope: {},
 			link: function(scope, element, attr, controller) {
 				oElement = element;
@@ -339,10 +381,12 @@ angular.module('contactApp', ['ngRoute'])
 	    	$scope.contactDetail = passDetails.getData("passDetail");
 		
 		$scope.isEditable = true;
-	    $scope.latitude = 0.00;
-	    $scope.longitude = 0.00;
 	    
-	    fnCallback = function(message) {
+	    /*
+	      $scope.latitude = 0.00;
+	    $scope.longitude = 0.00;
+	      
+	     fnCallback = function(message) {
 	    	console.log(message);
 	    };
 	    
@@ -369,17 +413,9 @@ angular.module('contactApp', ['ngRoute'])
 	    		callback("Please provide valid address");
 	    };
 	    
-	    getLatLngFrmAddr(fnCallback, $scope.contactDetail.address);
+	    getLatLngFrmAddr(fnCallback, $scope.contactDetail.address);*/
 	    
 		$scope.editContact = function() {
-			/*passDetails.addData("editContact", {
-				"id": $scope.contactDetail.id,
-				"name": $scope.contactDetail.name,
-				"phoneNo": $scope.contactDetail.phoneNo,
-				"address": $scope.contactDetail.address,
-				"notes": $scope.contactDetail.notes,
-				"done": false
-			});*/
 			$location.path('edit');
 		};
 		

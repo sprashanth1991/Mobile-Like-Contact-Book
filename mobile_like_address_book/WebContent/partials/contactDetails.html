@@ -8,7 +8,9 @@
 			<button ng-click="editContact()" ng-show="isEditable"> Edit </button>
 			<button ng-click="deleteContact()"> Delete </button>
 			</br> </br>
-			<google-map id="map" lat="{{latitude}}" lng="{{longitude}}"></google-map>
+			<google-map addr="{{ detail.address }}"></google-map>
 		</li>
 	</ul>
 </div>
+
+<!-- <google-map id="map" lat="{{latitude}}" lng="{{longitude}}"></google-map> -->

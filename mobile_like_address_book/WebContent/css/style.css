@@ -1,12 +1,11 @@
-#map>div {
+/* google-map > div {
 	height: 420px !important;
 	width: 1200px !important;
-}
+} */
 
-.infoWindowContent {
-	font-size: 14px !important;
-	border-top: 1px solid #ccc;
-	padding-top: 10px;
+.list > li > div {
+	height: 420px !important;
+	width: 1200px !important;
 }
 
 .list {
