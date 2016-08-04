@@ -1,5 +1,33 @@
-// Initialize Angular JS application.
+// Contact Class.
+function Contact(newContact) {
+	var self = this;
+	
+	var id = newContact.id;
+	var name = newContact.name;
+	var address = newContact.address;
+	var notes = newContact.notes;
+//	var fIsUpdated = newContact.done;
+	
+	self.getContact = function() {
+		var newData = {
+				"id": id,
+				"name": name,
+				"address": address,
+				"notes": notes
+//				"done": fIsUpdated
+		};
+		return newData;
+	};
+	
+	self.updateContact = function(details) {
+		name = details.name;
+		address = details.address;
+		notes = details.notes;
+//		fIsUpdated = details.done;
+	};
+};
 
+// Initialize Angular JS application.
 angular.module('contactApp', ['ngRoute'])
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -147,8 +175,16 @@ angular.module('contactApp', ['ngRoute'])
 			replace: true,
 			link: function($scope, $element, $attributes) {
 				var latitude, longitude, inpAddress;
+				var currentLongitude, currentLatitude, currentPosition;
+				var directionsService = new google.maps.DirectionsService();
+				var directionsRenderer = new google.maps.DirectionsRenderer();
 				ele = $element;
 				attrs = $attributes;
+				
+				navigator.geolocation.getCurrentPosition(function(position) {
+					currentLatitude = position.coords.latitude
+					currentLongitude = position.coords.longitude
+				});
 				
 				$window.setTimeout(function() {
 					/*$attributes.$observe('lat', function(value) {
@@ -220,6 +256,21 @@ angular.module('contactApp', ['ngRoute'])
 			            map: oMap,
 			            position: oMapOpts.center
 					});
+					
+					currentPosition = new google.maps.LatLng(currentLatitude, currentLongitude);
+					directionsRenderer.setMap(oMap);
+					directionsService.route({
+							  origin: currentPosition,
+							  destination: oMapOpts.center,
+							  travelMode: 'DRIVING'
+							}, function(response, status) {
+								if (status === 'OK') {
+									directionsRenderer.setDirections(response);
+								}
+								else {
+									console.log(status);
+								}
+					});
 				}, 2000);
 			}
 		};
@@ -235,14 +286,41 @@ angular.module('contactApp', ['ngRoute'])
 				var autoComplete = new google.maps.places.Autocomplete(oElement[0], {});
 				
 				google.maps.event.addListener(autoComplete, 'place_changed', (function() {
-					var result = autoComplete.getPlace();
+					var autoCompleteSrv = new google.maps.places.AutocompleteService();
+					
+					autoCompleteSrv.getPlacePredictions({
+		                input: oScope.$parent.address
+		              }, function listentoresult(list, status) {
+		            	  if(list != undefined || list.length > 0) {
+		            		  var placesService = new google.maps.places.PlacesService(oElement[0]);
+		                      placesService.getDetails({'reference': list[0].reference}, function detailsresult(detailsResult, placesServiceStatus) {
+		                    	  if (placesServiceStatus == google.maps.GeocoderStatus.OK) {
+		                    		  oScope.$apply(function() {
+		                    			  oScope.$parent.address = detailsResult.formatted_address;
+		                    			  oElement.val(detailsResult.formatted_address);
+		                    			  oScope.details = detailsResult;
+		                    			  
+		                    			  //on focusout the value reverts, need to set it again.
+		                    			  var watchFocusOut = oElement.on('focusout', function(event) {
+			                    			  oScope.$parent.address = detailsResult.formatted_address;
+		                    				  oElement.val(detailsResult.formatted_address);
+		                    				  oElement.unbind('focusout')
+	                    				  });
+	                				  });
+		                          }
+		                        }
+		                      );
+		            	  }
+		            });
+					
+					/*var result = autoComplete.getPlace();
 					
 					if(result != undefined) {
 						getPlace(result);
-					}
+					}*/
 				}));
 				
-				var getPlace = function(result) {
+				/*var getPlace = function(result) {
 					var autoCompleteSrv = new google.maps.places.AutocompleteService();
 					
 					autoCompleteSrv.getPlacePredictions({
@@ -270,7 +348,7 @@ angular.module('contactApp', ['ngRoute'])
 		                      );
 		            	  }
 		            });
-				}
+				}*/
 			}
 		};
 	})
